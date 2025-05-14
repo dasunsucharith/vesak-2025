@@ -1,0 +1,49 @@
+<!-- =======================================================================================
+  Vesak 2025 · 3‑D Journey
+  Author: Dasun (digitalvesak.io) – starter scaffolding for a GitHub Pages deploy.
+  
+  Folders / files:
+    index.html           → root document
+    css/style.css        → minimal overlay UI
+    js/script.js         → Three.js scene + keyboard nav
+    assets/              → put your wall textures + ambient.mp3
+
+  Quick start
+  ------------
+  1. Place four (or more)  16∶9 JPEGs in assets/  
+     – birth.jpg, enlightenment.jpg, firstsermon.jpg, parinirvana.jpg …  
+     AI‑generate with ImageFX / DALL·E in calm, painterly style.
+  2. Drop a looping ambient track from Suno AI at assets/ambient.mp3.
+  3. Commit + push. Enable GitHub Pages (branch → main / root).  
+     Visit https://<you>.github.io/vesak‑2025 – walk with ←↑→↓ or WASD.
+======================================================================================= -->
+
+<!-- ============================================== index.html ============================================== -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vesak 2025 — 3‑D Journey</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <!-- Three.js renders directly into this canvas -->
+        <canvas id="bg"></canvas>
+
+        <!-- Non‑interactive UI overlay -->
+        <div id="overlay">
+            <h1>Vesak 2025 · Buddha’s Journey</h1>
+            <p>Walk with ← ↑ → ↓ or W A S D · Click/tap once to start the ambient chant</p>
+        </div>
+
+        <!-- Looping ambience (replace with Suno AI output) -->
+        <audio id="ambient" src="assets/ambient.mp3" preload="auto" loop></audio>
+
+        <!-- Three.js logic -->
+        <script type="module" src="js/script.js"></script>
+    </body>
+</html>
