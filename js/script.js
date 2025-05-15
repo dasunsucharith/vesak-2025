@@ -31,15 +31,20 @@ const pt = new THREE.PointLight(0xfff4cc, 1, 20);
 pt.position.set(0, 4, 0);
 scene.add(pt);
 
+const loader = new THREE.TextureLoader();
+
+// Load the floor texture
+const floorTexture = loader.load("assets/floor_texture.png");
+
+// Create the floor with the texture
 const floor = new THREE.Mesh(
-	new THREE.PlaneGeometry(roomSize * 2, roomSize * 2),
-	new THREE.MeshStandardMaterial({ color: 0x228b22 })
+    new THREE.PlaneGeometry(roomSize * 2, roomSize * 2),
+    new THREE.MeshStandardMaterial({ map: floorTexture })
 );
 floor.rotation.x = -Math.PI / 2;
 scene.add(floor);
 
 /********** Gallery Walls **********/
-const loader = new THREE.TextureLoader();
 const stages = [
 	{ file: "birth.jpg", label: "Birth" },
 	{ file: "enlightenment.jpg", label: "Enlightenment" },
@@ -47,18 +52,13 @@ const stages = [
 	{ file: "parinirvana.jpg", label: "Parinirvana" },
 ];
 
-const wallTextures = [
-    "wall_texture_1.jpg", // Replace with your actual texture filenames
-    "wall_texture_2.jpg",
-    "wall_texture_3.jpg",
-    "wall_texture_4.jpg"
-];
+// Use the same texture file for all four walls
+const wallTexture = loader.load("/assets/wall_texture.png");
 
 stages.forEach((s, i) => {
-    const tex = loader.load(`assets/${wallTextures[i]}`); // Use wall texture
     const wall = new THREE.Mesh(
         new THREE.PlaneGeometry(wallW, wallH),
-        new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide })
+        new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide })
     );
     const cfg = [
         { x: 0, z: -roomSize, ry: 0 }, // North
@@ -77,6 +77,10 @@ window.addEventListener("keydown", (e) => {
 	keys[e.code] = true;
 	document
 		.getElementById("ambient")
+		.play()
+		.catch(() => {});
+	document
+		.getElementById("background-music")
 		.play()
 		.catch(() => {});
 });
@@ -100,6 +104,44 @@ function moveForward(dist) {
 		roomSize - clampPad
 	);
 }
+
+// --- Music autoplay logic ---
+const bgMusic = document.getElementById("background-music");
+bgMusic.loop = true;
+bgMusic.volume = 1;
+
+// Play music as soon as user interacts (once)
+let musicStarted = false;
+function ensureMusicPlaying() {
+    if (!musicStarted) {
+        bgMusic.play().catch(() => {});
+        musicStarted = true;
+    }
+}
+window.addEventListener("keydown", ensureMusicPlaying);
+window.addEventListener("mousedown", ensureMusicPlaying);
+window.addEventListener("touchstart", ensureMusicPlaying);
+
+// --- Music controls UI ---
+const playPauseBtn = document.getElementById("music-playpause");
+const volumeSlider = document.getElementById("music-volume");
+
+playPauseBtn.onclick = () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        playPauseBtn.textContent = "⏸️";
+    } else {
+        bgMusic.pause();
+        playPauseBtn.textContent = "▶️";
+    }
+};
+volumeSlider.oninput = (e) => {
+    bgMusic.volume = e.target.value;
+};
+
+// Update button icon on music end/pause/play
+bgMusic.addEventListener("pause", () => { playPauseBtn.textContent = "▶️"; });
+bgMusic.addEventListener("play", () => { playPauseBtn.textContent = "⏸️"; });
 
 function animate() {
 	requestAnimationFrame(animate);
