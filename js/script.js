@@ -53,7 +53,7 @@ const stages = [
 ];
 
 // Use the same texture file for all four walls
-const wallTexture = loader.load("/assets/wall_texture.png");
+const wallTexture = loader.load("assets/wall_texture.png");
 
 stages.forEach((s, i) => {
     const wall = new THREE.Mesh(
