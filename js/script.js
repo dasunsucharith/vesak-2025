@@ -44,6 +44,15 @@ const floor = new THREE.Mesh(
 floor.rotation.x = -Math.PI / 2;
 scene.add(floor);
 
+// Create the roof (ceiling) for the room
+const roof = new THREE.Mesh(
+    new THREE.PlaneGeometry(roomSize * 2, roomSize * 2),
+    new THREE.MeshStandardMaterial({ color: 0xcccccc, side: THREE.DoubleSide }) // light gray
+);
+roof.rotation.x = Math.PI / 2; // Rotate to be horizontal
+roof.position.y = wallH; // Place at the top of the walls
+scene.add(roof);
+
 /********** Gallery Walls **********/
 const stages = [
 	{ file: "birth.jpg", label: "Birth" },
